@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="CodeSync — Real-Time Collaborative Code Editor. Code together, ship faster." />
+    <meta name="theme-color" content="#070812" />
+
+    <!-- Preconnect to Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;500;600;700;800;900&family=Exo+2:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+
+    <title>CodeSync — Real-Time Collaborative Code Editor</title>
+
+    <style>
+      /* Prevent flash of unstyled content */
+      html { background-color: #070812; }
+      body { margin: 0; }
+      #root { min-height: 100vh; }
+
+      /* Custom scrollbar */
+      ::-webkit-scrollbar { width: 6px; height: 6px; }
+      ::-webkit-scrollbar-track { background: #0a0d1a; }
+      ::-webkit-scrollbar-thumb { background: #1e2548; border-radius: 3px; }
+      ::-webkit-scrollbar-thumb:hover { background: #00d4ff44; }
+
+      /* Monaco editor overrides */
+      .monaco-editor .cursors-layer .cursor { border-left-width: 2px !important; }
+    </style>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>

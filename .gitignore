@@ -1,0 +1,64 @@
+# ── CodeSync Root .gitignore ──
+
+# Node
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+.pnpm-debug.log*
+
+# Environment secrets
+.env
+.env.*
+.env.local
+.env.*.local
+.env.production
+server/.env
+server/.env.production
+client/.env
+!.env.example
+!**/.env.example
+
+# Build outputs
+dist/
+build/
+.next/
+out/
+
+# Logs
+logs/
+*.log
+
+# Docker volumes (local dev)
+.docker/
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Test coverage
+coverage/
+.nyc_output/
+
+# Temp files
+/tmp/exec-*
+
+# SSL / TLS certs (generated locally or on the host )
+nginx/certs/
+*.pem
+*.key
+*.crt
+
+# MongoDB local data (if mounting outside container)
+# NOTE: anchored to repo root — an unanchored "data/" would also ignore
+# client/src/data/ (the Learn page content) and break it in production.
+/data/
+
+# Vercel
+.vercel/
+

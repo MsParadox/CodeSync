@@ -1,0 +1,303 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── CSS Custom Properties ───────────────────────────────────────── */
+:root {
+  --color-void:    #070812;
+  --color-abyss:   #0a0d1a;
+  --color-surface: #0e1028;
+  --color-panel:   #111530;
+  --color-border:  #1e2548;
+  --color-subtle:  #252d5a;
+
+  --color-cyan:    #00d4ff;
+  --color-magenta: #ff3db4;
+  --color-green:   #00ff9d;
+  --color-amber:   #ffd600;
+  --color-red:     #ff3d6a;
+  --color-purple:  #c77dff;
+
+  --color-text-1:  #e8eaf6;
+  --color-text-2:  #8891c0;
+  --color-text-3:  #444d7a;
+
+  --font-display:  'Orbitron', sans-serif;
+  --font-body:     'Exo 2', sans-serif;
+  --font-code:     'JetBrains Mono', 'Fira Code', monospace;
+
+  --transition-base: 150ms ease;
+  --transition-smooth: 300ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* ── Base Reset ─────────────────────────────────────────────────── */
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html, body {
+  height: 100%;
+  font-family: var(--font-body);
+  background-color: var(--color-void);
+  color: var(--color-text-1);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+#root {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ── Typography ─────────────────────────────────────────────────── */
+h1, h2, h3, h4 {
+  font-family: var(--font-display);
+  letter-spacing: 0.02em;
+}
+
+code, pre, .font-code {
+  font-family: var(--font-code);
+}
+
+/* ── Neon Text Effects ──────────────────────────────────────────── */
+.text-glow-cyan {
+  text-shadow: 0 0 10px rgba(0, 212, 255, 0.8), 0 0 20px rgba(0, 212, 255, 0.4);
+}
+
+.text-glow-green {
+  text-shadow: 0 0 10px rgba(0, 255, 157, 0.8), 0 0 20px rgba(0, 255, 157, 0.4);
+}
+
+.text-glow-magenta {
+  text-shadow: 0 0 10px rgba(255, 61, 180, 0.8);
+}
+
+/* ── Neon Border Effects ────────────────────────────────────────── */
+.border-glow-cyan {
+  box-shadow: 0 0 8px rgba(0, 212, 255, 0.4), inset 0 0 8px rgba(0, 212, 255, 0.05);
+}
+
+.border-glow-green {
+  box-shadow: 0 0 8px rgba(0, 255, 157, 0.4), inset 0 0 8px rgba(0, 255, 157, 0.05);
+}
+
+/* ── Glassmorphism Panel ────────────────────────────────────────── */
+.glass-panel {
+  background: linear-gradient(135deg, rgba(14, 16, 40, 0.92), rgba(10, 13, 26, 0.96));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(30, 37, 72, 0.8);
+}
+
+.glass-panel-hover {
+  @apply glass-panel transition-all duration-200;
+}
+.glass-panel-hover:hover {
+  border-color: rgba(0, 212, 255, 0.25);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.08);
+}
+
+/* ── Grid Background ────────────────────────────────────────────── */
+.bg-grid {
+  background-image:
+    linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px);
+  background-size: 40px 40px;
+}
+
+/* ── Cyberpunk Button ───────────────────────────────────────────── */
+.btn-cyber {
+  position: relative;
+  padding: 0.5rem 1.25rem;
+  font-family: var(--font-display);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  background: transparent;
+  border: 1px solid var(--color-cyan);
+  color: var(--color-cyan);
+  cursor: pointer;
+  transition: all 200ms ease;
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.btn-cyber:hover {
+  background: rgba(0, 212, 255, 0.12);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.3), inset 0 0 20px rgba(0, 212, 255, 0.05);
+  color: #fff;
+}
+
+.btn-cyber-primary {
+  background: rgba(0, 212, 255, 0.15);
+  box-shadow: 0 0 15px rgba(0, 212, 255, 0.2);
+}
+
+.btn-cyber-primary:hover {
+  background: rgba(0, 212, 255, 0.25);
+  box-shadow: 0 0 30px rgba(0, 212, 255, 0.4);
+}
+
+.btn-cyber-green {
+  border-color: var(--color-green);
+  color: var(--color-green);
+  clip-path: polygon(8px 0%, 100% 0%, calc(100% - 8px) 100%, 0% 100%);
+}
+
+.btn-cyber-green:hover {
+  background: rgba(0, 255, 157, 0.12);
+  box-shadow: 0 0 20px rgba(0, 255, 157, 0.3);
+  color: #fff;
+}
+
+.btn-cyber-red {
+  border-color: var(--color-red);
+  color: var(--color-red);
+}
+
+.btn-cyber-red:hover {
+  background: rgba(255, 61, 106, 0.12);
+  box-shadow: 0 0 20px rgba(255, 61, 106, 0.3);
+  color: #fff;
+}
+
+/* ── Input Fields ───────────────────────────────────────────────── */
+.input-cyber {
+  background: rgba(10, 13, 26, 0.8);
+  border: 1px solid var(--color-border);
+  color: var(--color-text-1);
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  padding: 0.625rem 0.875rem;
+  transition: border-color 200ms, box-shadow 200ms;
+  outline: none;
+}
+
+.input-cyber:focus {
+  border-color: var(--color-cyan);
+  box-shadow: 0 0 0 2px rgba(0, 212, 255, 0.12), 0 0 10px rgba(0, 212, 255, 0.08);
+}
+
+.input-cyber::placeholder {
+  color: var(--color-text-3);
+}
+
+/* ── Status Badges ──────────────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  padding: 0.125rem 0.5rem;
+  border-radius: 2px;
+  font-family: var(--font-display);
+  font-size: 0.625rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+.badge-success { background: rgba(0, 255, 157, 0.12); color: var(--color-green); border: 1px solid rgba(0, 255, 157, 0.25); }
+.badge-error   { background: rgba(255, 61, 106, 0.12); color: var(--color-red);   border: 1px solid rgba(255, 61, 106, 0.25); }
+.badge-warning { background: rgba(255, 214, 0, 0.12);  color: var(--color-amber); border: 1px solid rgba(255, 214, 0, 0.25); }
+.badge-info    { background: rgba(0, 212, 255, 0.12);  color: var(--color-cyan);  border: 1px solid rgba(0, 212, 255, 0.25); }
+
+/* ── Scrollable areas ───────────────────────────────────────────── */
+.custom-scroll {
+  scrollbar-width: thin;
+  scrollbar-color: #1e2548 #0a0d1a;
+}
+
+/* ── Divider ────────────────────────────────────────────────────── */
+.neon-divider {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--color-cyan), transparent);
+  opacity: 0.3;
+}
+
+/* ── Loading Spinner ────────────────────────────────────────────── */
+.spinner {
+  width: 20px;
+  height: 20px;
+  border: 2px solid rgba(0, 212, 255, 0.2);
+  border-top-color: var(--color-cyan);
+  border-radius: 50%;
+  animation: spin 0.8s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* ── Particle canvas ────────────────────────────────────────────── */
+#particle-canvas {
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  pointer-events: none;
+}
+
+/* ── Remote cursor decorations (Monaco) ─────────────────────────── */
+.yRemoteSelection {
+  opacity: 0.3;
+}
+.yRemoteSelectionHead {
+  position: absolute;
+  border-left: 2px solid;
+  border-top: 2px solid;
+  border-top-right-radius: 2px;
+  height: 100%;
+  box-sizing: border-box;
+}
+.yRemoteSelectionHead::after {
+  position: absolute;
+  content: attr(data-username);
+  font-size: 10px;
+  font-family: var(--font-body);
+  padding: 0 4px;
+  border-radius: 2px;
+  top: -18px;
+  left: -2px;
+  white-space: nowrap;
+  pointer-events: none;
+}
+
+/* ── Animated background pulse ──────────────────────────────────── */
+.bg-pulse {
+  animation: bgPulse 8s ease-in-out infinite;
+}
+
+@keyframes bgPulse {
+  0%, 100% { opacity: 0.5; }
+  50% { opacity: 1; }
+}
+
+/* ── Corner accents ─────────────────────────────────────────────── */
+.corner-tl::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 16px; height: 16px;
+  border-top: 2px solid var(--color-cyan);
+  border-left: 2px solid var(--color-cyan);
+}
+
+.corner-br::after {
+  content: '';
+  position: absolute;
+  bottom: 0; right: 0;
+  width: 16px; height: 16px;
+  border-bottom: 2px solid var(--color-cyan);
+  border-right: 2px solid var(--color-cyan);
+}
+
+/* ── Toast overrides ─────────────────────────────────────────────── */
+.react-hot-toast > div {
+  background: var(--color-panel) !important;
+  color: var(--color-text-1) !important;
+  border: 1px solid var(--color-border) !important;
+  border-radius: 4px !important;
+  font-family: var(--font-body) !important;
+}

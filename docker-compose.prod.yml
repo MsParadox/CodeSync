@@ -1,0 +1,103 @@
+# ════════════════════════════════════════════════════════════════
+#  CodeSync — STANDALONE production stack
+#  Run on a Docker-capable VM (the code-execution sandbox needs the
+#  host Docker socket, so serverless/free-PaaS won't work).
+#
+#  Usage:
+#     cp server/.env.example server/.env.production   # fill in real values
+#     docker compose -f docker-compose.prod.yml build
+#     docker compose -f docker-compose.prod.yml up -d
+#
+#  Data lives in managed free tiers by default (MongoDB Atlas M0 +
+#  Upstash Redis) — set MONGODB_URI / REDIS_URL in server/.env.production.
+#  To self-host them instead, uncomment the mongodb/redis services.
+# ════════════════════════════════════════════════════════════════
+name: codesync-prod
+
+services:
+  # Pre-build the TypeScript runner image (tsx baked in; no network at run time)
+  ts-builder:
+    build:
+      context: ./docker/typescript
+      dockerfile: Dockerfile
+    image: codesync-ts:latest
+    command: echo "TypeScript runner image ready"
+
+  # ── API + WebSocket + code-execution orchestrator ──────────────
+  server:
+    build:
+      context: ./server
+      dockerfile: Dockerfile
+      target: development        # runs as root → can reach /var/run/docker.sock
+    image: codesync-server:prod
+    restart: unless-stopped
+    env_file:
+      - ./server/.env.production
+    environment:
+      NODE_ENV: production
+    command: ["dumb-init", "node", "server.js"]   # no nodemon in production
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock  # launches sandbox containers
+    depends_on:
+      ts-builder:
+        condition: service_completed_successfully
+    expose:
+      - "4000"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://localhost:4000/health"]
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
+
+  # ── Built static SPA (its own nginx serves /usr/share/nginx/html) ──
+  client:
+    build:
+      context: ./client
+      dockerfile: Dockerfile
+      target: production
+      args:
+        VITE_API_URL: ""          # same-origin: front nginx routes /api + /socket.io
+        VITE_SOCKET_URL: ""
+    image: codesync-client:prod
+    restart: unless-stopped
+    expose:
+      - "80"
+
+  # ── TLS-terminating reverse proxy (the only published service) ──
+  nginx:
+    image: nginx:1.25-alpine
+    restart: unless-stopped
+    depends_on:
+      - server
+      - client
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/prod.conf:/etc/nginx/conf.d/default.conf:ro
+      - ./nginx/certbot/www:/var/www/certbot:ro      # Let's Encrypt webroot
+      - /etc/letsencrypt:/etc/letsencrypt:ro          # certbot certs (host)
+
+  # ── OPTIONAL: self-hosted data layer (uncomment to use instead of
+  #    Atlas/Upstash; then point MONGODB_URI/REDIS_URL at these) ────
+  # mongodb:
+  #   image: mongo:7.0
+  #   restart: unless-stopped
+  #   environment:
+  #     MONGO_INITDB_ROOT_USERNAME: codesync
+  #     MONGO_INITDB_ROOT_PASSWORD: ${MONGO_PASSWORD}
+  #   volumes: [ mongo_data:/data/db ]
+  # redis:
+  #   image: redis:7.2-alpine
+  #   restart: unless-stopped
+  #   command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru --save ""
+  #   volumes: [ redis_data:/data ]
+
+# volumes:
+#   mongo_data:
+#   redis_data:
+
+networks:
+  default:
+    name: codesync-prod-net
